@@ -22,7 +22,7 @@ Citizen.CreateThread(function()
 		for k,v in ipairs(ESX.Game.GetObjects()) do
 			local playerCoords = GetEntityCoords(PlayerPedId())
 			local objectCoords = GetEntityCoords(v)
-			while GetDistanceBetweenCoords(playerCoords, objectCoords, true) < 2.5 and GetEntityModel(v) == GetHashKey("prop_parknmeter_01") do
+			while GetDistanceBetweenCoords(playerCoords, objectCoords, true) < 2.5 and (GetEntityModel(v) == GetHashKey("prop_parknmeter_01") or GetEntityModel(v) == GetHashKey("prop_parknmeter_02")) do
 				playerCoords = GetEntityCoords(PlayerPedId())
 				objectCoords = GetEntityCoords(v)
 				local colour = nil
