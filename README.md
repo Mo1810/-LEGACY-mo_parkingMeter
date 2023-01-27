@@ -5,7 +5,7 @@ Use the parking meters on the map of GTA for FiveM [lua]
 - Players should park their vehicle near a parking meter and then press "E" or "X" to pay.
 - When a police man walks by and sees that the parking meter is at 0 he can make a parking ticket.
 
-(When the script or the server gets restarted all parking meters will be resetted so tell your players not to pay up to 1000 hours ^^)
+(When the script or the server gets restarted all parking meters will be resetted.)
 
 If you registered in your ``es_extended`` an extra Account for "cash" then change the ``config.lua/Config.useCashAccount`` to true and perhaps also change the ``config.lua/Config.accountType``.
 
