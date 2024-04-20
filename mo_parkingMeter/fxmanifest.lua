@@ -2,7 +2,7 @@ fx_version 'bodacious'
 game 'gta5' 
 
 author 'Mo1810#4230'
-version '1.1.0'
+version '1.2.0'
 
 server_scripts {
 	"@es_extended/locale.lua",
