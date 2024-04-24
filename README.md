@@ -3,7 +3,7 @@ Use the parking meters on the map of GTA for FiveM [lua]
 
 [[HOW IT WORKS]]
 - Players should park their vehicle near a parking meter and then press "E" or "X" to pay.
-- When a police man walks by and sees that the parking meter is at 0 he can make a parking ticket.
+- When a police man walks by and sees that the parking meter is at 0 he can write a parking ticket.
 
 (When the script or the server gets restarted all parking meters will be resetted.)
 
