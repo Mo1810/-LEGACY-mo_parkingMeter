@@ -1,5 +1,7 @@
 # mo_parkingMeter
-Use the parking meters on the map of GTA for FiveM [lua]
+Use the parking meters on the map of GTA for FiveM [lua;esx]
+
+For support please write an issue and I will proceed it as soon as possible. Or feel free to join my discord and ask for help. Link is in my profile.
 
 # INSTALL
 - Click green button `Code` 
