@@ -16,7 +16,6 @@ Citizen.CreateThread(function()
 	local wait = 2000
 	while true do
 		local meterObject, distance = ESX.Game.GetClosestObject(coords, Config.props)
-		
 		if meterObject ~= -1 and distance < 2.5 then
 			wait = 6
 			local playerCoords = GetEntityCoords(PlayerPedId())
@@ -91,8 +90,8 @@ AddEventHandler('parkingMeter:addTime', function(meterCoords, timeAmount)
 end)
 
 RegisterNetEvent('parkingMeter:syncTable')
-AddEventHandler('parkingMeter:syncTable', function(_parkingMeter)
-	parkingMeter = _parkingMeter
+AddEventHandler('parkingMeter:syncTable', function(_parkingMeters)
+	parkingMeters = _parkingMeters
 end)
 
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --

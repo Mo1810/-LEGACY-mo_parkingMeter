@@ -2,7 +2,7 @@
 --[[      Made by Mo1810      ]]--
 --[[--------------------------]]--
 
-local parkingMeter = {}
+local parkingMeters = {}
 
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 -- -- -- -- -- -- --   MAIN THREAD  -- -- -- -- -- -- -- -- 
@@ -11,13 +11,13 @@ local parkingMeter = {}
 Citizen.CreateThread(function()
 	while true do
 		Citizen.Wait(Config.HourTimer * 60000)
-		for k,v in ipairs(parkingMeter) do
-			if parkingMeter[k].hoursLeft ~= 0 then
-				parkingMeter[k].hoursLeft = (parkingMeter[k].hoursLeft - 1)
+		for k,v in ipairs(parkingMeters) do
+			if v.hoursLeft ~= 0 then
+				v.hoursLeft = (v.hoursLeft - 1)
 			end
 		end
 		local xPlayer = ESX.GetPlayerFromId(1)
-		TriggerClientEvent('parkingMeter:syncTable', -1, parkingMeter)
+		TriggerClientEvent('parkingMeter:syncTable', -1, parkingMeters)
 	end
 end)
 
@@ -41,9 +41,9 @@ end)
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
 RegisterServerEvent('parkingMeter:syncTable')
-AddEventHandler('parkingMeter:syncTable', function(_parkingMeter)
-	parkingMeter = _parkingMeter
-	TriggerClientEvent('parkingMeter:syncTable', -1, parkingMeter)
+AddEventHandler('parkingMeter:syncTable', function(_parkingMeters)
+	parkingMeters = _parkingMeters
+	TriggerClientEvent('parkingMeter:syncTable', -1, parkingMeters)
 end)
 
 AddEventHandler('onResourceStart', function(resourceName)
