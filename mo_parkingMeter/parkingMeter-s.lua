@@ -1,5 +1,5 @@
 --[[--------------------------]]--
---[[  Created by Mo1810#4230  ]]--
+--[[      Made by Mo1810      ]]--
 --[[--------------------------]]--
 
 local parkingMeter = {}
@@ -28,20 +28,11 @@ end)
 ESX.RegisterServerCallback("parkingMeter:removeMoney",function(source, cb, hours)
 	local xPlayer = ESX.GetPlayerFromId(source)
 	Citizen.Wait(10)
-	if Config.useCashAccount then
-		if xPlayer.getAccount(Config.accountType).money >= (hours * Config.price) then
-			xPlayer.removeAccountMoney(Config.accountType, hours * Config.price)
-			cb(true)
-		else
-			cb(false)
-		end
+	if xPlayer.getAccount(Config.accountType).money >= (hours * Config.price) then
+		xPlayer.removeAccountMoney(Config.accountType, hours * Config.price)
+		cb(true)
 	else
-		if xPlayer.getMoney() >= (hours * Config.price) then
-			xPlayer.removeMoney(hours * Config.price)
-			cb(true)
-		else
-			cb(false)
-		end
+		cb(false)
 	end
 end)
 
@@ -59,9 +50,9 @@ AddEventHandler('onResourceStart', function(resourceName)
 	if (GetCurrentResourceName() ~= resourceName) then
 		return
 	end
-	print('Script by Mo1810#4230 - https://discord.gg/Q25mtKms8c')
+	print('Script by Mo1810 - https://discord.gg/Q25mtKms8c')
 end)
 
 --[[--------------------------]]--
---[[  Created by Mo1810#4230  ]]--
+--[[      Made by Mo1810      ]]--
 --[[--------------------------]]--

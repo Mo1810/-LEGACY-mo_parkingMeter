@@ -1,144 +1,94 @@
 --[[--------------------------]]--
---[[  Created by Mo1810#4230  ]]--
+--[[      Made by Mo1810      ]]--
 --[[--------------------------]]--
 
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 -- -- -- -- -- -- -- --  VARIABLES  -- -- -- -- -- -- -- --
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
-local parkingMeter = {}
+local parkingMeters = {}
 
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 -- -- -- -- -- -- -- --  MAIN PART  -- -- -- -- -- -- -- --
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
 Citizen.CreateThread(function()
+	local wait = 2000
 	while true do
-		for k,v in ipairs(ESX.Game.GetObjects()) do
+		local meterObject, distance = ESX.Game.GetClosestObject(coords, Config.props)
+		
+		if meterObject and distance < 2.5 then
+			wait = 6
 			local playerCoords = GetEntityCoords(PlayerPedId())
-			local objectCoords = GetEntityCoords(v)
-			while GetDistanceBetweenCoords(playerCoords, objectCoords, true) < 2.5 and (GetEntityModel(v) == GetHashKey("prop_parknmeter_01") or GetEntityModel(v) == GetHashKey("prop_parknmeter_02")) do
-				playerCoords = GetEntityCoords(PlayerPedId())
-				objectCoords = GetEntityCoords(v)
-				local colour = nil
-				local found = false
-				for k,v in ipairs(parkingMeter) do
-					if parkingMeter[k].coords == objectCoords then
-						found = true
-						hoursLeft = parkingMeter[k].hoursLeft
-					end
+			local objectCoords = GetEntityCoords(meterObject)
+			local hoursLeft = 0
+			
+			local colour = nil
+			for k,v in ipairs(parkingMeters) do
+				if v.coords == objectCoords then
+					hoursLeft = v.hoursLeft
 				end
-				
-				if hoursLeft == nil or not found then
-					hoursLeft = 0
-				end
-				
-				if hoursLeft > 0 then
-					colour = "~g~"
-				else
-					colour = "~r~"
-				end
-				Draw3DText(objectCoords.x, objectCoords.y, objectCoords.z + 1.0, "~b~"..Config.price.." ~s~".._U('hour').."~n~"..colour..hoursLeft.." ~s~".._U('hoursLeft').."~n~".."~y~[E] ~s~| ".._U('extend1').."  ~y~[X] ~s~| ".._U('extend10'))
-				
-				--[[1 HOUR]]
-				if IsControlJustReleased(0, Config.trigger_key1) then
-					local hours = 1
-					if #parkingMeter == 0 then
-						ESX.TriggerServerCallback('parkingMeter:removeMoney', function(removed)
-							if removed then
-								table.insert(parkingMeter, {coords = objectCoords, hoursLeft = hours})
-								TriggerServerEvent('parkingMeter:syncTable', parkingMeter)
-								notify(_U('removed', (Config.price * hours), hours))
-							else
-								notify(_U('noMoney', (Config.price * hours)))
-							end
-						end, hours)
-					else
-						local found = false
-						for k,v in ipairs(parkingMeter) do
-							if parkingMeter[k].coords == objectCoords then
-								found = true
-								ESX.TriggerServerCallback('parkingMeter:removeMoney', function(removed)
-									if removed then
-										parkingMeter[k].hoursLeft = (parkingMeter[k].hoursLeft + hours)
-										TriggerServerEvent('parkingMeter:syncTable', parkingMeter)
-										notify(_U('removed', (Config.price * hours), hours))
-									else
-										notify(_U('noMoney', (Config.price * hours)))
-									end
-								end, hours)
-							end
-						end
-						
-						if not found then
-							ESX.TriggerServerCallback('parkingMeter:removeMoney', function(removed)
-								if removed then
-									table.insert(parkingMeter, {coords = objectCoords, hoursLeft = hours})
-									TriggerServerEvent('parkingMeter:syncTable', parkingMeter)
-									notify(_U('removed', (Config.price * hours), hours))
-								else
-									notify(_U('noMoney', (Config.price * hours)))
-								end
-							end, hours)
-						end
-					end
-				end
-				--[[1 HOUR]]
-				
-				--[[10 HOURS]]
-				if IsControlJustReleased(0, Config.trigger_key10) then
-					local hours = 10
-					if #parkingMeter == 0 then
-						ESX.TriggerServerCallback('parkingMeter:removeMoney', function(removed)
-							if removed then
-								table.insert(parkingMeter, {coords = objectCoords, hoursLeft = hours})
-								TriggerServerEvent('parkingMeter:syncTable', parkingMeter)
-								notify(_U('removed', (Config.price * hours), hours))
-							else
-								notify(_U('noMoney', (Config.price * hours)))
-							end
-						end, hours)
-					else
-						found = false
-						for k,v in ipairs(parkingMeter) do
-							if parkingMeter[k].coords == objectCoords then
-								found = true
-								ESX.TriggerServerCallback('parkingMeter:removeMoney', function(removed)
-									if removed then
-										parkingMeter[k].hoursLeft = (parkingMeter[k].hoursLeft + hours)
-										TriggerServerEvent('parkingMeter:syncTable', parkingMeter)
-										notify(_U('removed', (Config.price * hours), hours))
-									else
-										notify(_U('noMoney', (Config.price * hours)))
-									end
-								end, hours)
-							end
-						end
-						
-						if not found then
-							ESX.TriggerServerCallback('parkingMeter:removeMoney', function(removed)
-								if removed then
-									table.insert(parkingMeter, {coords = objectCoords, hoursLeft = hours})
-									TriggerServerEvent('parkingMeter:syncTable', parkingMeter)
-									notify(_U('removed', (Config.price * hours), hours))
-								else
-									notify(_U('noMoney', (Config.price * hours)))
-								end
-							end, hours)
-						end
-					end
-				end
-				--[[10 HOURS]]
-				Citizen.Wait(5)
 			end
+			
+			if hoursLeft == nil or hoursLeft == 0 then
+				hoursLeft = 0
+				colour = "~r~"
+			elseif hoursLeft > 0 then
+				colour = "~g~"
+			end
+			
+			Draw3DText(objectCoords.x, objectCoords.y, objectCoords.z + 1.0, "~b~"..Config.price.." ~HC_40~".._U('hour').."~n~"..colour..hoursLeft.." ~s~".._U('hoursLeft').."~n~".."~y~[E] ~s~| ~s~".._U('extend1').."  ~y~[X] ~s~| ~s~".._U('extend10'))
+			
+			--[[1 HOUR]]
+			if IsControlJustReleased(0, Config.trigger_key1) then
+				TriggerEvent('parkingMeter:addTime', objectCoords, 1)
+			end
+			--[[1 HOUR]]
+				
+			--[[10 HOURS]]
+			if IsControlJustReleased(0, Config.trigger_key10) then
+				TriggerEvent('parkingMeter:addTime', objectCoords, 10)
+			end
+			--[[10 HOURS]]
+		elseif wait ~= 1000 then
+			wait = 1000
 		end
-		Citizen.Wait(1000)
+		Citizen.Wait(wait)
 	end
 end)
 
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 -- -- -- -- -- -- -- -- -- EVENT -- -- -- -- -- -- -- -- --
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+RegisterNetEvent('parkingMeter:addTime')
+AddEventHandler('parkingMeter:addTime', function(meterCoords, timeAmount)
+	local meterIndex = 0
+	if #parkingMeters == 0 then
+		table.insert(parkingMeters, {coords = meterCoords, hoursLeft = 0})
+		meterIndex = 1
+	else
+		for k,v in ipairs(parkingMeters) do
+			if v.coords == meterCoords then
+				meterIndex = k
+			end
+		end
+		if meterIndex == 0 then
+			table.insert(parkingMeters, {coords = meterCoords, hoursLeft = 0})
+			meterIndex = #parkingMeters
+		end
+	end
+	
+	ESX.TriggerServerCallback('parkingMeter:removeMoney', function(removed)
+		if removed then
+			parkingMeters[meterIndex].hoursLeft = (parkingMeters[meterIndex].hoursLeft + timeAmount)
+			TriggerServerEvent('parkingMeter:syncTable', parkingMeters)
+			notify(_U('removed', (Config.price * timeAmount), timeAmount))
+		else
+			notify(_U('noMoney', (Config.price * timeAmount)))
+		end
+	end, timeAmount)
+end)
 
 RegisterNetEvent('parkingMeter:syncTable')
 AddEventHandler('parkingMeter:syncTable', function(_parkingMeter)
@@ -159,9 +109,9 @@ function Draw3DText(x, y, z, text)
         SetTextEntry("STRING")
         SetTextCentre(1)
         AddTextComponentString(text)
-        if Config.greySquare == true then
-			local factor = (string.len(text)) / 370
-			DrawRect(_x,_y+0.0125, 0.015+ factor, 0.038, 003, 003, 003, 75)
+        if Config.graySquare then
+			local factor = (string.len(text)) / 1500
+			DrawRect(_x,_y + 0.040, 0.015 + factor, 0.10, 3, 3, 3, 75)
         end
         DrawText(_x, _y)
     end
@@ -174,5 +124,5 @@ function notify(msg)
 end
 
 --[[--------------------------]]--
---[[  Created by Mo1810#4230  ]]--
+--[[      Made by Mo1810      ]]--
 --[[--------------------------]]--
