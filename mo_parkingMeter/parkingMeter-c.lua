@@ -17,7 +17,7 @@ Citizen.CreateThread(function()
 	while true do
 		local meterObject, distance = ESX.Game.GetClosestObject(coords, Config.props)
 		
-		if meterObject and distance < 2.5 then
+		if meterObject ~= -1 and distance < 2.5 then
 			wait = 6
 			local playerCoords = GetEntityCoords(PlayerPedId())
 			local objectCoords = GetEntityCoords(meterObject)
